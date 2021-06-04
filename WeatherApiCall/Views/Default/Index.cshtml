@@ -1,0 +1,9 @@
+﻿@model string
+@{
+                /**/
+
+                Layout = null;
+                string html = TempData["html"] as string;
+}
+
+@Html.Raw(html)

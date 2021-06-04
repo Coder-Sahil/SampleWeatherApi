@@ -1,0 +1,236 @@
+﻿
+
+@using WeatherApiCall.Models;
+@model WeatherDataModel
+
+@{
+    Layout = null;
+    var imgSrc = "";
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Get_User_Input</title>
+</head>
+<body>
+    <div>
+        <center>
+            <h1>Weather Api </h1>
+        </center>
+        <fieldset>
+            <legend>Weather Search</legend>
+            <br />
+            <br />
+            @using (Html.BeginForm("Show_Weather_Data", "WeatherData", FormMethod.Post))
+            { }
+            @*@Html.Label("Select Mode")
+
+            @Html.DropDownListFor(x => x.Mode, new List<SelectListItem>
+            { new SelectListItem {Text="Xml",Value="Xml" }
+            , new SelectListItem{Text="Json", Value="Json"} }
+            , "--Select Type--")*@
+
+
+            @Html.Label("Select Country")
+
+            @Html.DropDownListFor(x => x.Location, new List<SelectListItem>
+{ new SelectListItem {Text=" Delhi India",Value="delhi,in" }
+,new SelectListItem {Text=" Mumbai India",Value="mumbai,in" }
+,new SelectListItem {Text=" lahore Pakistan",Value="lahore,pk" }
+,new SelectListItem {Text=" Newyork Usa",Value="new york,us" }
+,new SelectListItem {Text=" Sydney Australia",Value="sydney,aus" }
+, new SelectListItem{Text="London", Value="london,uk"}
+, new SelectListItem{Text="Amazonas", Value="Amazonas,bra"}
+}
+, "--Select Country--", new {  @class ="locationdropdown"})
+
+            @*@Html.Label("Select Unit")
+
+            @Html.DropDownListFor(x => x.Unit, new List<SelectListItem>
+            { new SelectListItem {Text="metric",Value="metric" }
+            , new SelectListItem{Text="imperial", Value="imperial"} }
+            , "--Select Unit--" ,new { @class = "unitdropdown" })*@
+
+            <input type="submit" value="Get Weather" name="GetWeather" id="GetWeather" />
+
+
+            <div id="TypeError" style="color:red; display:none">Error</div>
+            @*<div id="WeatherData" style="color:red; display:none"></div>*@
+            <br />
+
+        </fieldset>
+
+
+    </div>
+    <br />
+    <br />
+    <div id="WeatherData" style="display:none">
+        <center>
+            <h1>
+                <div id="Cityname"></div>
+            </h1>
+        </center>
+        <img id="user_img"
+             src="@imgSrc"
+             alt=""
+             height="100"
+             width="120"
+             style="border:hidden; align-content:stretch" />
+        
+        <table id="weathertable" style="display:none">
+
+            <tr>
+                <td> @Html.Label("Latitude") : </td>
+                <td><div id="Latitude"></div></td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Longitude") : </td>
+                <td><div id="Longitude"></div></td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Weather Type") : </td>
+
+                <td><div id="WeatherType"></div></td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Weather Description") : </td>
+                <td><div id="WeatherDescription"></div></td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Temperature") : </td>
+                <td><div id="Temperature"></div> </td>
+            </tr>
+            <tr>
+                <td> @Html.Label("Min Temp") : </td>
+                <td><div id="MinTemp"></div></td>
+
+                <td>@Html.Label("Max Temp") : </td>
+                <td><div id="MaxTemp"></div></td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Pressure") : </td>
+                <td><div id="Pressure"></div> </td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Visibility") : </td>
+                <td><div id="Visibility"></div></td>
+            </tr>
+            <tr>
+                <td>@Html.Label("WindSpeed") : </td>
+                <td><div id="WindSpeed"></div> </td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Sunrise") : </td>
+                <td><div id="Sunrise"></div> </td>
+
+                <td>@Html.Label("Sunset") : </td>
+                <td><div id="Sunset"></div></td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Timezone") : </td>
+                <td><div id="Timezone"></div></td>
+            </tr>
+        </table>
+        <br />
+        <br />
+        <center>
+            <h2> @Html.ActionLink("Clear Search", "Get_User_Input")</h2>
+        </center>
+    </div>
+</body>
+</html>
+<script src="~/Script/jquery-3.4.1.min.js"></script>
+<link href="~/Script/Color.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    //$(".locationdropdown").change(
+    $("#GetWeather").click(
+        function () {
+            // $("#WeatherData").empty();
+            $("#WeatherData").removeAttr("background-image");
+            $("#WeatherData").hide();
+            var location = $(".locationdropdown").val();
+            
+            
+            $.ajax({
+                type: "GET",
+                url: "/WeatherData/Ajax_Show_Weather_Data?location=" + location,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    
+                    if (response == null) {
+                        alert("Failed To Get Response Due To Incorrect Input");
+                    }
+                  
+
+
+                    $('#user_img').attr('src', "http://openweathermap.org/img/w/" + response.icon + ".png");
+                    $("#WeatherData").removeAttr("background-image");
+                    $("#WeatherData").css("background-color", "null");
+                    $("#Latitude").text(response.Longitude);
+                    $("#Longitude").text(response.Latitude);
+                    $("#WeatherType").text(response.weathertype);
+                    $("#WeatherDescription").text(response.weatherdescription);
+                    $("#Temperature").text(response.Temp + " " + "°C");
+                    $("#MinTemp").text(response.Temp_Max + " " + "°C");
+                    $("#MaxTemp").text(response.Temp_Min + " " + "°C");
+                    $("#Pressure").text(response.Pressure + " " + "hpa");
+                    $("#Visibility").text(response.visibility + " " + "Km");
+                    $("#WindSpeed").text(response.Windspeed + " " + "mph");
+                    $("#Sunrise").text("☼" + " " + response.stringSunrise);
+                    $("#Sunset").text("☼" + " " + response.stringSunset);
+                    $("#Timezone").text(response.Timezone);
+                    $("#Cityname").text("Weather Of " + response.CountryName);
+                    //$("#Latitude").text(response.visibility);
+
+
+                    var res = response.weathertype;
+
+                    //if(res.toLowerCase() == "rain") {
+                    //    var Rain = "/Script/RainImage.jpg";
+                    //    $("#WeatherData").css("background-image", "url(" + Rain + ")");
+                    //    $("#WeatherData").css("color", "yellow");
+                    //}
+
+                    //else if (res.toLowerCase() == "haze") {
+                    //    var Haze = "/Script/HazeWeather.jpg";
+                    //    $("#WeatherData").css("background-image", "url(" + Haze + ")");
+                    //}
+
+                    //else if (res.toLowerCase() == "sunny") {
+                    //    var Sunny = "/Script/SunnyDay.jpg";
+                    //    $("#WeatherData").css("background-image", "url(" + Sunny + ")");
+                    //    $("#WeatherData").attr("background-size", "cover");
+
+                    //}
+                    //else {
+                    //    var defaultimg = "/Script/file-20180320-31608-mzi52w.jpg";
+                    //    $("#WeatherData").css("background-image", "url(" + defaultimg + ")");
+                    //}
+
+                    $("#weathertable").show();
+                    $("#WeatherData").show();
+
+
+
+                },
+                failure: function (response) {
+                    alert(response);
+                }
+            });
+
+
+
+        });
+
+
+
+
+</script>
+
+<link href="~/Script/weatherdatabg.css" rel="stylesheet" />

@@ -1,0 +1,92 @@
+﻿@using WeatherApiCall.Models;
+@model List<WeatherDataModel>
+
+@{
+    /**/
+
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Show_Weather_Data</title>
+</head>
+<body style="color:black">
+    <div>
+        <center>
+            <h1>Weather Details </h1>
+        </center>
+        <fieldset>
+            <legend><b>Weather Of @ViewBag.location </b></legend>
+            <br />
+            <br />
+            @foreach (var item in Model)
+            {
+            <table>
+                <tr>
+                    <td> @Html.Label("Latitude") : </td>
+                    <td>@item.Latitude</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Longitude") : </td>
+                    <td>@item.Longitude</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Weather Type") : </td>
+                    <td>@item.weathertype</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Weather Description") : </td>
+                    <td>@item.weatherdescription</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Temperature") : </td>
+                    <td>@item.Temp °C</td>
+                </tr>
+                <tr>
+                    <td> @Html.Label("Min Temp") : </td>
+                    <td>@item.Temp_Min °C</td>
+
+                    <td>@Html.Label("Max Temp") : </td>
+                    <td>@item.Temp_Max °C</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Pressure") : </td>
+                    <td>@item.Pressure pascal</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Visibility") : </td>
+                    <td>@item.visibility</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("WindSpeed") : </td>
+                    <td>@item.Windspeed mph</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Sunrise") : </td>
+                    <td>☼ @item.Sunrise </td>
+
+                    <td>@Html.Label("Sunset") : </td>
+                    <td>☼ @item.Sunset</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Timezone") : </td>
+                    <td>@item.Timezone</td>
+                </tr>
+            </table>
+            }
+            <br />
+            <br />
+            @Html.ActionLink("Back To Search", "Get_User_Input")
+
+
+        </fieldset>
+    </div>
+</body>
+</html>
+
+<script src="~/Script/jquery-3.4.1.min.js"></script>
+<link href="~/Script/Color 1.css" rel="stylesheet" />

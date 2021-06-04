@@ -142,7 +142,7 @@ namespace WeatherApiCall.Controllers
                 {
                     //X - RapidAPI - Key
                     client.DefaultRequestHeaders.Add("X-RapidAPI-Host", "community-open-weather-map.p.rapidapi.com");
-                    client.DefaultRequestHeaders.Add("X-RapidAPI-Key", "c59e7164e0msh0e5bdc83369f6bdp11b688jsnca97e032cc74");
+                    client.DefaultRequestHeaders.Add("X-RapidAPI-Key", "ENTER YOUR FREE KEY FROM RAPID API");
                     client.BaseAddress = new Uri("https://community-open-weather-map.p.rapidapi.com/");
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     var responseTask = client.GetAsync("weather?units=%22metric%22+or+%22imperial%22&mode=xml%2C+html&q=" + location);
